@@ -65,5 +65,97 @@ Js 正则表达式学习和总结
 > * \0 查找NULL字符
 > * \n 查找换行符
 
-睡觉，明天再写。
-=========
+##### 重复字符匹配
+
+> * {n,m}匹配前一项至少n次，但不能超过m次
+> * {n,}匹配前一项n次或更多次
+> * {n}匹配前一项n次
+> * n?匹配前一项0次或者1次，也就是说前一项是可选的，等价于{0,1}
+> * n+匹配前一项一次或多次，等价于{1,}
+> * n*匹配前一项0次或多次，等价于{0，}
+> * n$匹配任何结尾为n的字符串
+> * ^n匹配任何开头为n的字符串
+> * ？=n匹配任何其后紧接指定字符串n的字符串
+> * ?!n匹配任何其后没有紧接指定字符串n的字符串 
+
+##### 匹配特定数字(看的我头晕死！！)
+
+> * ^[1-9]\d*$ 匹配正整数
+> * ^-[1-9]\d*$ 匹配负整数
+> * ^-?[0-9]\d*$ 匹配整数
+> * ^[1-9]\d*|0$ 匹配非负整数（正整数 + 0）
+> * ^-[1-9]\d*|0$ 匹配非正整数（负整数 + 0）
+> * ^[1-9]\d*.\d*|0.\d*[1-9]\d*$ 匹配正浮点数   
+> * ^-([1-9]\d*.\d*|0.\d*[1-9]\d*)$ 匹配负浮点数
+> * ^-?([1-9]\d*.\d*|0.\d*[1-9]\d*|0?.0+|0)$ 匹配浮点数
+> * ^[1-9]\d*.\d*|0.\d*[1-9]\d*|0?.0+|0$ 匹配非负浮点数（正浮点数 + 0）
+> * ^(-([1-9]\d*.\d*|0.\d*[1-9]\d*))|0?.0+|0$ 匹配非正浮点数（负浮点数 + 0）
+
+##### 匹配特定字符串
+
+> * ^[A-Za-z]+$ 匹配由26个英文字母组成的字符串
+> * ^[A-Z]+$ 匹配由26个英文字母的大写组成的字符串
+> * ^[a-z]+$ 匹配由26个英文字母的小写组成的字符串
+> * ^[A-Za-z0-9]+$ 匹配由数字和26个英文字母组成的字符串
+> * ^\w+$ 匹配由数字、26个英文字母或者下划线组成的字符串
+
+### 方法
+
+##### test方法
+
+> * 检索字符串中指定的值。返回true或者false
+> * 如果字符串string中含有与RegExpObject匹配的文本，则返回true，否则返回false
+
+##### Demo1
+
+> * 如果正则表达式带有g修饰符，则每一次test方法都从上一次匹配结束的位置开始匹配。
+> * 使用了g修饰符的正则表达式，表示要记录每一次搜索的位置，直接使用test方法，每次开始搜索的位置都是上一次匹配的最后一个位置。
+
+```html
+	
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>test方法</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+	        var reg = /abc/g;
+	        var str = "123abc456abc";
+	        console.log(reg.lastIndex);//0
+	        console.log(reg.test(str));//true
+	        console.log(reg.lastIndex);//6
+	        console.log(reg.test(str));//true
+	        console.log(reg.lastIndex);//12
+	        console.log(reg.test(str));//false
+	    </script>
+	</body>
+	</html>
+	
+```
+
+##### Demo2
+
+> 如果正则表达式使一个空字符串，则会匹配所有的字符串，但需要使用new RegExp()方式
+
+```html
+
+	<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>test方法</title>
+</head>
+<body>
+    <script type="text/javascript">
+        console.log(new RegExp('').test('abc'));//true
+        console.log(/''/.test('abc'));//false
+        console.log(/''/.test("''"));//true
+    </script>
+</body>
+</html>
+
+```
