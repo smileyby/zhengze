@@ -143,19 +143,178 @@ Js 正则表达式学习和总结
 ```html
 
 	<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>test方法</title>
-</head>
-<body>
-    <script type="text/javascript">
-        console.log(new RegExp('').test('abc'));//true
-        console.log(/''/.test('abc'));//false
-        console.log(/''/.test("''"));//true
-    </script>
-</body>
-</html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>test方法</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+	        console.log(new RegExp('').test('abc'));//true
+	        console.log(/''/.test('abc'));//false
+	        console.log(/''/.test("''"));//true
+	    </script>
+	</body>
+	</html>
 
 ```
+
+#### exec方法
+
+> * exec() 方法用于检索字符串中的正则表达式的匹配
+> * 返回一个数组，其中存放匹配的结果。如果未找到，则返回值为null
+
+##### Demo1
+
+```html
+	
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>exec方法</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+	    var str = "xyz";
+	    var reg1 = /x/;
+	    var reg2 = /a/;
+	    var res1 = reg1.exec(str);
+	    var res2 = reg2.exec(str);
+	    console.log(res1);//["x", index: 0, input: "xyz"]
+	    console.log(res2);//null
+	    </script>
+	</body>
+	</html>
+	
+```
+
+##### Demo2
+
+> 如果正则表达式包括圆括号，则返回的数组会包括多个元素。首先是整个匹配成功的结果，后面是圆括号匹配的结果，如果有多个圆括号，他们的匹配成功结果都会成为数组元素
+
+```html
+	
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>exec方法2</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+	    var str = 'abcdabc';
+	    var reg = /(a)b(c)/;
+	    var res = reg.exec(str);
+	    console.log(res);//["abc", "a", "c", index: 0, input: "abcdabc"]
+	    </script>
+	</body>
+	</html>
+
+```
+
+> 对于调用exec方法返回的数组具有以下两个属性
+> * input 整个原待匹配的字符串
+> * index 整个魔石匹配成功的开始位置
+
+#### 支持正则表达式的String对象的方法
+
+##### search方法
+
+> * search方法用于检索字符串中指定的子字符串，或检索与正则表达式相匹配的字符串。
+> * 返回值： stringObject中第一个与regexp相匹配的子串的起始位置
+> * 注释： 如果没有找到任何匹配的子串，则返回 -1（和indexOf方法类似）
+> * search() 方法不执行全局匹配，它将忽略标志g。它同时忽略regexp 的 lastIndex属性，并且总是从字符串的开始进行检索，这意味着它总是返回 stringObject 的第一个匹配的位置。
+
+##### Demo
+
+```html
+	
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>search方法</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+	    var str = "abcdcef";
+	    console.log(str.search(/c/g));//2
+	     </script>
+	</body>
+	</html>
+	
+```
+
+##### match 方法
+
+> * match() 方法可在字符串内检索指定的值，或找到一个或多个正则表达式的匹配。改方法类似indexOf()和lastIndexOf()，凡是它返回指定的值，而不是字符串的位置。
+> * 字符串对象的match方法与正则对象的exec方法比较类似
+> * 但是如果正则表达式带有g修饰符，那么match方法与exec方法就有差别
+> * 可以看到match返回了所有成功匹配的结果，但是exec方法只返回了一个
+
+##### Demo
+
+```html
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>match方法</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+	    var str = "abcd";
+	    var reg1 = /a/;
+	    var reg2 = /x/;
+	    console.log(str.match(reg1));//["a", index: 0, input: "abcd"]
+	    console.log(str.match(reg2));//null
+	
+	    var str = "abcdabc";
+	    var reg = /a/g;
+	    console.log(str.match(reg));//["a", "a"]
+	    console.log(reg.exec(str));//["a", index: 0, input: "abcdabc"]
+	     </script>
+	</body>
+	</html>
+
+```
+
+##### replace方法
+
+> * replace() 方法用于在字符串中用一些替换另一些字符，或者换一个与正则表达式匹配的子串
+> * 返回值：一个新的字符串，使用replacement替换regexp的第一次匹配或所有匹配之后得到的
+> * 字符串stringObject 的 replace() 方法执行的查找替换的操作。它将在stringObject中查找与regexp相匹配的子字符串，然后用replacement来替换这些子串。如果regexp具有全局标志g，那么replace() 方法将替换所有匹配的子串。否则，它只替换第一个匹配子串。
+
+```html
+	
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>replace方法</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+	    var str = "xxx";
+	    console.log(str.replace('x','y'));//yxx
+	    console.log(str.replace(/x/,'y'));//yxx
+	    console.log(str.replace(/x/g,'y'));//yyy
+	     </script>
+	</body>
+	</html>
+	
+```
+
+啦啦啦
+=====
+
+
+
