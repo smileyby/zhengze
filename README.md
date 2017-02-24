@@ -313,8 +313,71 @@ Js 正则表达式学习和总结
 	
 ```
 
-啦啦啦
-=====
+##### replace方法中特殊字符替换
+
+<table>
+	<tr>
+		<td>字符</td>
+		<td>替换文本</td>	
+	</tr>
+	<tr>
+		<td>$1、$2、...、$99</td>
+		<td>与regexp中的第1到99个子表达式相匹配的文本</td>
+	</tr>
+	<tr>
+		<td>$&</td>
+		<td>与regexp相匹配的字串</td>
+	</tr>
+	<tr>
+		<td>$`</td>
+		<td>位于匹配子串左侧的文本</td>
+	</tr>
+	<tr>
+		<td>$'</td>
+		<td>位于匹配子串右侧的文本</td>
+	</tr>	
+	<tr>
+		<td>$$</td>
+		<td>直接量符号</td>
+	</tr>	
+</table>
+
+##### Demo
+
+```js
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>replace中的特殊字符替换</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+		    //用子表达式替换：$1和$2
+		    //正则表达式中()就是一个子表达式，$1对应是第一个表达式的内容，即java，$2为script
+		    var str = "javascript";
+		    console.log(str.replace(/(java)(script)/,'$2$1')); //输出：scriptjava 
+		    //$& 为正则表达式匹配的字符串
+		    //正则表达式通过直接量java来匹配，匹配结果为java，则 $&的值为java，然后用字符串$&-来替换匹配的字符串
+		    var str1 = "javascript";
+		    console.log(str1.replace(/java/,'$&-')); //输出：java-script
+		
+		    var str2 = "javascript";
+		    // $`为匹配子串ava的左侧文本，则为j
+		    console.log(str2.replace(/ava/,"$`")); //输出：jjscript
+		    // $'为匹配子串ava的右侧文本，则为script
+		    console.log(str2.replace(/ava/,"$'")); //输出：jscriptscript
+		    // $$为直接量符号，即插入一个$符号
+			console.log(str2.replace(/ava/,"$$"));//输出：j$script
+	    </script>
+	</body>
+	</html>	
+
+```	
+
+
 
 
 
