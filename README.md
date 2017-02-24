@@ -377,6 +377,177 @@ Js 正则表达式学习和总结
 
 ```	
 
+##### replace的参数replacement是函数
+
+> * match为匹配整个字符串，即：xyz456789%$&^
+> * a1 为第一个子表达式，([^\d]*),匹配0个或多个非数字的字符，即：xyz
+> * a2 为第二个子表达式， (\d*),匹配0个或多个的数字，即：45678
+> * a3 为第三个子表达式， ([^\w]*),匹配0个或匹配任何非单词字符。等价于[^A-Za-z0-9_],即%$&^
+> * index 为魔石匹配出现的位置，从第一个字符已经匹配成功，则位置为0
+> * string为字符串本身，即： xyz45678%$&^
+
+```html
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>replace的参数replacement是函数</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+			function replacer(match, a1, a2, a3, index, string) {
+			  return [a1, a2, a3].join(' ~ ');
+			}
+			 var str =  'xyz45678%$&^';
+			 var reg = /([^\d]*)(\d*)([^\w]*)/
+			var res = str.replace(reg, replacer); 
+			console.log(res);//xyz ~ 45678 ~ %$&^
+	    </script>
+	</body>
+	</html>
+	
+```
+
+#####　split方法
+
+> split（‘字符串的分割正则’，返回数组的最大成员数）；返回分割后各部分组成的数组
+
+##### Demo
+
+```html
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>split方法</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+		    var str = 'a,b , c,d';
+		    var res = str.split(",");//以逗号来分割字符串
+		    console.log(res);//["a", "b ", " c", "d"];
+		
+		    var str1 = 'a,b , c,,d';
+		    var res1 = str1.split(/,*/);//以0或多个逗号来分割字符串
+		    console.log(res1);//["a", "b", " ", " ", "c", "d"];
+		
+		    var str2 = 'a, b,c, d';
+		    var res2 = str2.split(/, */);//以0或对个逗号空格来分割字符串
+		    console.log(res2);//["a", "b", "c", "d"];
+		
+		    var str3 = 'a, b,c, d';
+		    var res3 = str3.split(/, */,2);//以0或对个逗号空格来分割字符串，同时限制返回数组中最多有两项
+		    console.log(res3);//["a", "b"];
+	     </script>
+	</body>
+	</html>
+	
+```
+
+> 可以变换正则的匹配规则来分割字符串
+> 
+> 下面真这个的匹配规则是以0或多个X来进行分割，如果加上括号则括号匹配的部分也就是分割规则也会成为数组成员返回、
+
+##### Demo
+
+```html
+	
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>split方法2</title>
+	</head>
+	<body>
+	    <script type="text/javascript">
+		    var str = "x@@xx@xx@@";
+		    var res = str.split(/x*/);//以0或者对个x为分隔符
+		    console.log(res);//["", "@", "@", "@", "@", "@"];
+		
+		    var res1 = str.split(/(x*)/);//如果加上括号则括号匹配的部分也就是分割规则也会作为数组成员返回
+		    console.log(res1);//["", "x", "@", "", "@", "xx", "@", "xx", "@", "", "@"]
+	     </script>
+	</body>
+	</html>
+	
+```
+
+### 正则表达式的一些应用
+
+#### 1、字符串中出现最多的字符
+
+> var re = /(\w)/1+/g;
+> 
+> (\w) 外面的圆括号表示分组，\1表示重复第一分组的内容， \1+表示\w匹配到的字符重复n次，后面的g表示执行全部替换
+> 
+> str.replace的第二个参数是函数，参数a表示真个匹配到的字符串，b表示第一捕获分组也就是出现重复的单个字符，将啊。length与记录过的最多重复num比较，如果a.length更大，就将它赋值给num，用value记录重复字符b，这个函数返回的是替换文本，但这里没有返回值，也就是说替换为空，每次替换这个函数都被执行
+
+```html
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>字符串中出现次数最多的字符</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var str = 'mmmmmmmmaaammmmmmmmmbbbbsccc';
+			function most(str) {
+			    var arr = str.split('');
+			    str = arr.sort().join('');//将字符串按单个字符分割，然后排序组合，经过这一步，相同的字符就会排列到一起
+			    var reg = /(\w)\1+/g;
+			    var num = 0;
+			    var value = '';
+			    str.replace(reg, function (a,b) {
+			    // console.log(a);
+			        if (num<a.length) {
+			            num = a.length;
+			            value = b;
+			        }
+			    });
+			    return '出现次数最多的字符是' + value + '出现了' + num + '次';
+			}
+			console.log(most(str));
+	    </script>
+	</body>
+	</html>
+	
+```
+
+##### 从url中提取子域名
+
+```js
+
+	var url = "http://www.abc.com";
+    var reg = /[^.]+/;//匹配除了.之外的其他字符
+    var res = reg.exec(url)[0].substr(7);
+    console.log(reg.exec(url));//["http://www", index: 0, input: "http://www.abc.com"]
+    console.log(res);//www
+	
+```
+
+### 常用的正则表达式
+
+> * 匹配国内电话号码：\d{3}-\d{8}|\d{4}-\d{7}
+> * 匹配QQ号码：[1-9][0-9]{4,}
+> * 邮政编码：[1-9]\d[5](?!\d)
+> * 身份证： /^(\d{14}|\d{17})(\d|[xX])$/
+> * 匹配ip地址：\d+.\d+.\d+.\d+
+> * 匹配账号是否合法（字母开头，允许5-16字节，允许字母数字下划线）：^[a-zA-Z][a-zA-Z0-9_]{4,15}$表单验证时很实用
+> * 匹配中文字符： /[\u4E00-\u9FA5\uf900-ufasd]/
+> * 匹配Email地址：/^([a-zA-Z_0-9-])+@([a-zA-Z_0-9-])+(.[a-zA-Z_0-9-])+$/ （邮箱由三部分组成：1、一个或多个字母数字下划线和杠+@+一个或多个字母数字下划线和杠+。+一个或多个字母数字下划线和杠）
+> * 匹配网址url： [a-zA-z]+://[^\s]*
+> * 判断字符串是不是由数字组成： /^\d*$/
+> * 限制文本框只能输入数字和小数点（两位小数点）：/^\d*.?\d{0,2}$/（说明：开头有0个或多个数字，（?表示匹配前一项0次或多次）中间有0个或者1个小数点，小数点后面有0个或者最多2个数字）
+> 
+
 
 
 
