@@ -6,17 +6,17 @@ Js 正则表达式学习和总结
 > * 方法一：直接量语法
 
 ```js
-	var reg = /pattern/attribute;
+var reg = /pattern/attribute;
 ```
 
 > * 创建RegExp对象的语法
 
 ```js
-	var reg = new RegExp(pattern, attributes);
+var reg = new RegExp(pattern, attributes);
 ```
 
 > 参数说明：
-> * 参数 pattern 是一个字符串，指定了正则表达式的魔石或其他正则表达式
+> * 参数 pattern 是一个字符串，指定了正则表达式的模式或其他正则表达式
 > * 参数 attributes 是一个可选的字符串，包含属性 'g'、'i'和'm'，分别用于指定全局匹配、区分大小写的匹配和多行匹配。ECMAScript标准化之前，不支持 m 属性。如果 pattern 是正则表达式，而不是字符串，则省略改参数。
 > 
 > 两者的区别在于：
