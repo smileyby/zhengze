@@ -552,7 +552,7 @@ var reg = new RegExp(pattern, attributes);
 > * 单词的首字母大写：/\b(\w)|\s(\w)/g
 > * 验证日期格式： /^\d{4}[-\/]\d{1,2}[-\/]\d{1,2}$/ (日起格式有两种yyyy-mm-dd或yyyy/mm/dd 分析：月份和天数可能有一位或两位)
 
-[正则第二弹，继续滚股正则知识并做相应练习](https://github.com/smileyby/zhengze2/)
+[正则第二弹，继续巩固正则知识并做相应练习](https://github.com/smileyby/zhengze2/)
 
 
 
